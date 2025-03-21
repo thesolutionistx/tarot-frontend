@@ -1,0 +1,30 @@
+// src/actions/types.js
+// Auth Types
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+export const REGISTER_FAIL = 'REGISTER_FAIL';
+export const USER_LOADED = 'USER_LOADED';
+export const AUTH_ERROR = 'AUTH_ERROR';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOGOUT = 'LOGOUT';
+export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+
+// Token Types
+export const GET_TOKEN_PACKAGES = 'GET_TOKEN_PACKAGES';
+export const TOKEN_PACKAGES_ERROR = 'TOKEN_PACKAGES_ERROR';
+export const CREATE_PAYMENT_INTENT = 'CREATE_PAYMENT_INTENT';
+export const PAYMENT_INTENT_ERROR = 'PAYMENT_INTENT_ERROR';
+export const CONFIRM_PURCHASE = 'CONFIRM_PURCHASE';
+export const PURCHASE_ERROR = 'PURCHASE_ERROR';
+export const GET_TRANSACTIONS = 'GET_TRANSACTIONS';
+export const TRANSACTIONS_ERROR = 'TRANSACTIONS_ERROR';
+
+// Reading Types
+export const GET_READING_TYPES = 'GET_READING_TYPES';
+export const READING_TYPES_ERROR = 'READING_TYPES_ERROR';
+export const GENERATE_READING = 'GENERATE_READING';
+export const READING_ERROR = 'READING_ERROR';
+export const GET_READINGS = 'GET_READINGS';
+export const GET_READING = 'GET_READING';
+export const CLEAR_READING = 'CLEAR_READING';
+export const SET_LOADING = 'SET_LOADING';
