@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  --primary-dark: #2c003e;
+  --primary-darker: #1a0026;
+  --primary-light: #4a0066;
+  --accent-gold: #ffd700;
+  --accent-gold-light: #ffe566;
+  --accent-red: #ff6b6b;
+  --text-light: #ffffff;
+  --card-bg-light: #f5f5f5;
+  --card-bg-dark: #e0e0e0;
+  --glass-bg: rgba(255, 255, 255, 0.1);
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-darker));
+  color: var(--text-light);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cinzel', serif;
+  color: var(--accent-gold);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-gold);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Custom Button Styles */
+.btn-primary {
+  @apply px-6 py-3 rounded-full font-medium transition-all duration-300;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+  color: var(--primary-dark);
+  border: 2px solid var(--accent-gold);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-primary:hover {
+  @apply transform scale-105;
+  background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+.btn-secondary {
+  @apply px-6 py-3 rounded-full font-medium transition-all duration-300;
+  background: transparent;
+  color: var(--accent-gold);
+  border: 2px solid var(--accent-gold);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+}
+
+.btn-secondary:hover {
+  @apply transform scale-105;
+  background: rgba(255, 215, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.2);
+}
+
+/* Glass Morphism */
+.glass-panel {
+  @apply rounded-xl backdrop-blur-md;
+  background: var(--glass-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Form Elements */
+input, select, textarea {
+  @apply px-4 py-3 rounded-lg bg-opacity-20 bg-white backdrop-blur-sm border border-white border-opacity-20 text-white placeholder-white placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-accent-gold focus:border-transparent transition duration-300;
+}
+
+/* Card Styles */
+.tarot-card {
+  @apply relative w-full h-full rounded-xl overflow-hidden transform transition-all duration-500;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tarot-card-front, .tarot-card-back {
+  @apply absolute w-full h-full backface-visibility-hidden transition-all duration-500;
+}
+
+.tarot-card-front {
+  background: linear-gradient(135deg, var(--card-bg-light), var(--card-bg-dark));
+  border: 3px solid var(--accent-gold);
+  transform: rotateY(0deg);
+}
+
+.tarot-card-back {
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-red));
+  border: 3px solid #ff0000;
+  transform: rotateY(180deg);
+}
+
+.tarot-card.flipped .tarot-card-front {
+  transform: rotateY(180deg);
+}
+
+.tarot-card.flipped .tarot-card-back {
+  transform: rotateY(0deg);
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.8s ease forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s ease forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.8s ease forwards;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { transform: translateX(-50px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .btn-primary, .btn-secondary {
+    @apply px-4 py-2 text-sm;
+  }
+}
+
+/* Mystical background elements */
+.mystical-bg {
+  @apply fixed inset-0 -z-10 overflow-hidden;
+}
+
+.mystical-star {
+  @apply absolute rounded-full;
+  background: white;
+  box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.8);
+  animation: twinkle 4s infinite alternate;
+}
+
+.mystical-circle {
+  @apply absolute rounded-full opacity-10;
+  border: 1px solid var(--accent-gold);
+  animation: rotate 60s linear infinite;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; }
+  100% { opacity: 0.7; }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(26, 0, 38, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold-light);
+}
