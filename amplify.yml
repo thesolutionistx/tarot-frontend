@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm ci
+        - npm ci --legacy-peer-deps
     build:
       commands:
         - npm run build
@@ -30,3 +30,4 @@ frontend:
     variables:
       NEXT_PUBLIC_API_URL: 'https://main.d7tnw9kr9k75r.amplifyapp.com'
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_live_51QxCAzKOv5dcCRayCeN4EaGDTQSFrRQQiw4cTmiS3KItw18rwqRhQ3LyHEzkFPVdat6VxUeIafU8gTIDyjSOkibo00qL95XGaz'
+    nodeVersion: 20
