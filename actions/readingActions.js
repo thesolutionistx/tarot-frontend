@@ -1,5 +1,3 @@
-// src/actions/readingActions.js
-import axios from 'axios';
 import {
   GET_READING_TYPES,
   READING_TYPES_ERROR,
@@ -10,12 +8,12 @@ import {
   CLEAR_READING,
   SET_LOADING
 } from './types';
+import { readingAPI } from '../services/api';
 
 // Get reading types
 export const getReadingTypes = () => async dispatch => {
   try {
-    const res = await axios.get('/api/readings/types');
-
+    const res = await readingAPI.getReadingTypes();
     dispatch({
       type: GET_READING_TYPES,
       payload: res.data.readingTypes
@@ -23,36 +21,26 @@ export const getReadingTypes = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: READING_TYPES_ERROR,
-      payload: err.response.data.message
+      payload: err.response?.data?.message || 'Error fetching reading types'
     });
   }
 };
 
 // Generate reading
 export const generateReading = readingData => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-
   dispatch({ type: SET_LOADING });
-
   try {
-    const res = await axios.post('/api/readings/generate', readingData, config);
-
+    const res = await readingAPI.generateReading(readingData);
     dispatch({
       type: GENERATE_READING,
       payload: res.data.reading
     });
-
     return res.data.reading;
   } catch (err) {
     dispatch({
       type: READING_ERROR,
-      payload: err.response.data.message
+      payload: err.response?.data?.message || 'Error generating reading'
     });
-
     throw err;
   }
 };
@@ -60,10 +48,8 @@ export const generateReading = readingData => async dispatch => {
 // Get user readings
 export const getUserReadings = () => async dispatch => {
   dispatch({ type: SET_LOADING });
-
   try {
-    const res = await axios.get('/api/readings');
-
+    const res = await readingAPI.getUserReadings();
     dispatch({
       type: GET_READINGS,
       payload: res.data.readings
@@ -71,7 +57,7 @@ export const getUserReadings = () => async dispatch => {
   } catch (err) {
     dispatch({
       type: READING_ERROR,
-      payload: err.response.data.message
+      payload: err.response?.data?.message || 'Error fetching readings'
     });
   }
 };
@@ -79,10 +65,8 @@ export const getUserReadings = () => async dispatch => {
 // Get reading by ID
 export const getReadingById = id => async dispatch => {
   dispatch({ type: SET_LOADING });
-
   try {
-    const res = await axios.get(`/api/readings/${id}`);
-
+    const res = await readingAPI.getReadingById(id);
     dispatch({
       type: GET_READING,
       payload: res.data.reading
@@ -90,7 +74,7 @@ export const getReadingById = id => async dispatch => {
   } catch (err) {
     dispatch({
       type: READING_ERROR,
-      payload: err.response.data.message
+      payload: err.response?.data?.message || 'Error fetching reading'
     });
   }
 };

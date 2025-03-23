@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { connect } from 'react-redux';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import Navbar from './Navbar';
-import TarotCard from './tarot/TarotCard';
+import { motion } from 'framer-motion';
+import { generateReading } from './actions/readingActions';
+import { drawRandomCards } from './services/tarotService';
 
-const ReadingForm = ({ auth: { user } }) => {
-  const [spread, setSpread] = useState('1');
-  const [isLoading, setIsLoading] = useState(false);
+const ReadingForm = ({ auth, generateReading }) => {
+  const router = useRouter();
   const [question, setQuestion] = useState('');
   const [readingType, setReadingType] = useState('general');
-
-  const spreadOptions = [
-    { value: '1', label: 'Single Card', description: 'Quick insight for a specific situation' },
-    { value: '3', label: 'Past-Present-Future', description: 'Understand your journey through time' },
-    { value: '5', label: 'Five Card Cross', description: 'Detailed analysis of your current situation' },
-    { value: '7', label: 'Chakra Spread', description: 'Insight into your energy centers' },
-    { value: '10', label: 'Celtic Cross', description: 'Comprehensive reading for complex questions' }
-  ];
+  const [spread, setSpread] = useState('single');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const readingTypes = [
     { value: 'general', label: 'General Guidance', description: 'Overall insight into your life path' },
@@ -26,70 +21,89 @@ const ReadingForm = ({ auth: { user } }) => {
     { value: 'spiritual', label: 'Spiritual Growth', description: 'Guidance for your spiritual development' }
   ];
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    // Simulate loading for demo purposes
-    setTimeout(() => {
-      window.location.href = '/result';
-    }, 1500);
+  const spreadOptions = [
+    { value: 'single', label: 'Single Card', description: 'Quick insight for a specific situation', cardCount: 1 },
+    { value: 'three', label: 'Past-Present-Future', description: 'Understand your journey through time', cardCount: 3 },
+    { value: 'five', label: 'Five Card Cross', description: 'Detailed analysis of your current situation', cardCount: 5 },
+    { value: 'celtic', label: 'Celtic Cross', description: 'Comprehensive reading for complex questions', cardCount: 10 }
+  ];
+
+  const getCardCount = (spreadValue) => {
+    const option = spreadOptions.find(opt => opt.value === spreadValue);
+    return option ? option.cardCount : 1;
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        duration: 0.6,
-        when: "beforeChildren",
-        staggerChildren: 0.2
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Draw random cards based on selected spread
+      const cardCount = getCardCount(spread);
+      const cards = drawRandomCards(cardCount);
+
+      // Generate reading using the cards and question
+      const result = await generateReading({
+        question,
+        readingType: spread === 'single' ? 'single-card' : 
+                    spread === 'three' ? 'three-card' : 
+                    spread === 'five' ? 'five-card-cross' : 'celtic-cross',
+        cards
+      });
+
+      // Navigate to result page with reading data
+      router.push({
+        pathname: '/result',
+        query: { 
+          id: result._id 
+        }
+      });
+    } catch (err) {
+      console.error('Error generating reading:', err);
+      setError('Unable to generate reading. Please try again.');
+      setIsLoading(false);
     }
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } }
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-dark to-primary-darker">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 py-8">
-        <motion.div
-          className="max-w-4xl mx-auto"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+    <div className="min-h-screen bg-primary-dark py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        <motion.div 
+          className="relative bg-primary-medium rounded-xl shadow-2xl p-6 sm:p-10 overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
         >
-          <motion.div variants={itemVariants} className="mb-12 text-center">
-            <h1 className="text-4xl md:text-5xl font-cinzel font-bold mb-4 text-shadow-gold">
-              Tarot Reading
-            </h1>
-            <p className="text-xl font-cormorant text-white/90">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <h1 className="text-4xl sm:text-5xl font-cinzel text-accent-gold text-center mb-8">Tarot Reading</h1>
+            <p className="text-white/80 text-center mb-10">
               Focus your energy and intention as you prepare to receive guidance from the cards
             </p>
-          </motion.div>
-          
-          <motion.div 
-            variants={itemVariants}
-            className="glass-panel p-8 md:p-10 mb-10"
-          >
+            
+            {error && (
+              <div className="bg-red-900/50 border border-red-500 text-white px-4 py-3 rounded mb-6">
+                {error}
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit}>
               <div className="mb-8">
-                <label className="block font-cinzel text-accent-gold mb-3 text-xl" htmlFor="question">
+                <label className="block font-cinzel text-accent-gold mb-3 text-xl">
                   What question seeks an answer?
                 </label>
                 <textarea
-                  id="question"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg p-4 text-white focus:outline-none focus:ring-2 focus:ring-accent-gold/50 focus:border-accent-gold/50 transition-all min-h-[120px]"
                   placeholder="Enter your question or focus for this reading..."
-                  className="w-full bg-white/5 border border-accent-gold/30 rounded-lg focus:border-accent-gold focus:ring-2 focus:ring-accent-gold/50 h-32 resize-none"
+                  required
                 ></textarea>
-                <p className="mt-2 text-white/60 text-sm italic">
+                <p className="text-white/60 text-sm mt-2 italic">
                   For the clearest guidance, be specific but open-ended in your inquiry
                 </p>
               </div>
@@ -98,11 +112,11 @@ const ReadingForm = ({ auth: { user } }) => {
                 <label className="block font-cinzel text-accent-gold mb-3 text-xl">
                   Choose your reading type
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {readingTypes.map((type) => (
                     <motion.div 
                       key={type.value}
-                      whileHover={{ scale: 1.03 }}
+                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={`p-4 border rounded-lg cursor-pointer transition-all ${
                         readingType === type.value 
@@ -112,7 +126,7 @@ const ReadingForm = ({ auth: { user } }) => {
                       onClick={() => setReadingType(type.value)}
                     >
                       <div className="flex items-center">
-                        <div className={`w-4 h-4 rounded-full mr-3 border ${
+                        <div className={`w-5 h-5 rounded-full mr-3 border ${
                           readingType === type.value 
                             ? 'border-accent-gold bg-accent-gold' 
                             : 'border-white/50'
@@ -223,11 +237,12 @@ const ReadingForm = ({ auth: { user } }) => {
 };
 
 ReadingForm.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  generateReading: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps)(ReadingForm);
+export default connect(mapStateToProps, { generateReading })(ReadingForm);

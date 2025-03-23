@@ -3,14 +3,30 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - npm ci
     build:
       commands:
         - npm run build
   artifacts:
-    baseDirectory: out
+    baseDirectory: .next
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
+      - .next/cache/**/*
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Strict-Transport-Security'
+          value: 'max-age=31536000; includeSubDomains'
+        - key: 'X-Content-Type-Options'
+          value: 'nosniff'
+        - key: 'X-Frame-Options'
+          value: 'SAMEORIGIN'
+        - key: 'X-XSS-Protection'
+          value: '1; mode=block'
+  environment:
+    variables:
+      NEXT_PUBLIC_API_URL: 'https://main.d7tnw9kr9k75r.amplifyapp.com'
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_live_51QxCAzKOv5dcCRayCeN4EaGDTQSFrRQQiw4cTmiS3KItw18rwqRhQ3LyHEzkFPVdat6VxUeIafU8gTIDyjSOkibo00qL95XGaz'
