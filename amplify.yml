@@ -3,40 +3,14 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 20
-        - nvm use 20
-        - npm ci --legacy-peer-deps
-        - npm run lint || true  # Run linting but don't fail the build
+        - npm install
     build:
       commands:
         - npm run build
-        - npm run test || true  # Run tests but don't fail the build
   artifacts:
-    baseDirectory: .next
+    baseDirectory: out
     files:
       - '**/*'
   cache:
     paths:
       - node_modules/**/*
-      - .next/cache/**/*
-  customHeaders:
-    - pattern: '**/*'
-      headers:
-        - key: 'Strict-Transport-Security'
-          value: 'max-age=31536000; includeSubDomains'
-        - key: 'X-Content-Type-Options'
-          value: 'nosniff'
-        - key: 'X-Frame-Options'
-          value: 'SAMEORIGIN'
-        - key: 'X-XSS-Protection'
-          value: '1; mode=block'
-        - key: 'Referrer-Policy'
-          value: 'strict-origin-when-cross-origin'
-        - key: 'Permissions-Policy'
-          value: 'camera=(), microphone=(), geolocation=()'
-  environment:
-    variables:
-      NEXT_PUBLIC_API_URL: 'https://main.d7tnw9kr9k75r.amplifyapp.com'
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_live_51QxCAzKOv5dcCRayCeN4EaGDTQSFrRQQiw4cTmiS3KItw18rwqRhQ3LyHEzkFPVdat6VxUeIafU8gTIDyjSOkibo00qL95XGaz'
-      NODE_ENV: 'production'
-    nodeVersion: 20

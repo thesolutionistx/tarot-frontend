@@ -1,8 +1,9 @@
+// Create axios instance with base URL from environment variable
 import axios from 'axios';
 
 // Create axios instance with base URL from environment variable
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://main.d7tnw9kr9k75r.amplifyapp.com/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://api.askpsychicdrew.com/api',
   headers: {
     'Content-Type': 'application/json'
   }
