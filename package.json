@@ -1,0 +1,12 @@
+{
+  "name": "tarot-static-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tarot Card Reader Static Site",
+  "scripts": {
+    "start": "serve -s ."
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+}
