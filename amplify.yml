@@ -4,14 +4,28 @@ frontend:
     # IMPORTANT - Please verify your build commands
     preBuild:
       commands:
-        - echo "No build required - static site"
+        - npm install 20
     build:
       commands:
-        - echo "Skipping build - using pre-built static files"
+        - npm run build || true  # In case there's no build step needed
   artifacts:
     # IMPORTANT - Please verify your artifacts directory
     baseDirectory: /
     files:
       - '**/*'
+  customHeaders:
+    - pattern: '**/*'
+      headers:
+        - key: 'Cache-Control'
+          value: 'public, max-age=31536000, immutable'
+        - key: 'Strict-Transport-Security'
+          value: 'max-age=31536000; includeSubDomains'
+        - key: 'X-Content-Type-Options'
+          value: 'nosniff'
+        - key: 'X-Frame-Options'
+          value: 'SAMEORIGIN'
+        - key: 'X-XSS-Protection'
+          value: '1; mode=block'
   cache:
-    paths: []
+    paths:
+      - node_modules/**/*
