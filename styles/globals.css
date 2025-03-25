@@ -15,6 +15,8 @@ body {
   background: rgb(var(--background-rgb));
   min-height: 100vh;
   font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 @layer utilities {
@@ -51,26 +53,61 @@ body {
   }
 
   .card-panel {
-    @apply bg-[#3A005F] rounded-xl p-6 shadow-lg border border-gold/10;
+    @apply bg-[#3A005F] rounded-xl p-4 md:p-6 shadow-lg border border-gold/10;
   }
 
   .btn-primary {
-    @apply bg-gold text-[#2B004A] font-bold py-3 px-6 rounded-lg hover:bg-[#F7D001] transition-colors;
+    @apply bg-gold text-[#2B004A] font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg hover:bg-[#F7D001] transition-colors text-sm md:text-base;
   }
 
   .btn-outline {
-    @apply border-2 border-gold text-gold font-bold py-3 px-6 rounded-lg hover:bg-gold/10 transition-colors;
+    @apply border-2 border-gold text-gold font-bold py-2 md:py-3 px-4 md:px-6 rounded-lg hover:bg-gold/10 transition-colors text-sm md:text-base;
   }
 
   .input-field {
-    @apply w-full bg-[#200038] border border-gold/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-gold transition-colors;
+    @apply w-full bg-[#200038] border border-gold/20 rounded-lg px-3 md:px-4 py-2 text-white focus:outline-none focus:border-gold transition-colors text-sm md:text-base;
   }
 
   .radio-group {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4;
   }
 
   .radio-option {
-    @apply flex items-center space-x-3 p-4 bg-[#200038] rounded-lg border border-gold/20 cursor-pointer hover:border-gold transition-colors;
+    @apply flex items-center space-x-3 p-3 md:p-4 bg-[#200038] rounded-lg border border-gold/20 cursor-pointer hover:border-gold transition-colors text-sm md:text-base;
+  }
+
+  /* Responsive text utilities */
+  .text-responsive {
+    @apply text-sm md:text-base;
+  }
+
+  .text-responsive-lg {
+    @apply text-base md:text-lg;
+  }
+
+  .text-responsive-xl {
+    @apply text-lg md:text-xl;
+  }
+
+  /* Responsive spacing utilities */
+  .space-y-responsive {
+    @apply space-y-4 md:space-y-6;
+  }
+
+  .space-x-responsive {
+    @apply space-x-4 md:space-x-6;
+  }
+
+  /* Responsive padding utilities */
+  .p-responsive {
+    @apply p-4 md:p-6;
+  }
+
+  .px-responsive {
+    @apply px-4 md:px-6;
+  }
+
+  .py-responsive {
+    @apply py-4 md:py-6;
   }
 } 

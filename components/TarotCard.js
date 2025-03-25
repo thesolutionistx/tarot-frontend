@@ -34,7 +34,7 @@ export default function TarotCard({ card, isFlipped, onClick, position = 0, tota
 
   return (
     <motion.div
-      className="relative h-[400px] cursor-pointer perspective-1000"
+      className="relative h-[300px] md:h-[400px] cursor-pointer perspective-1000"
       onClick={onClick}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -47,34 +47,18 @@ export default function TarotCard({ card, isFlipped, onClick, position = 0, tota
         transition={{ duration: 0.6 }}
       >
         {/* Front of card */}
-        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-lighter to-purple-dark rounded-xl border-2 border-gold shadow-lg p-6 flex items-center justify-center">
+        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-lighter to-purple-dark rounded-xl border-2 border-gold shadow-lg p-4 md:p-6 flex items-center justify-center">
           <div className="text-center">
-            <div className="text-6xl mb-4">✨</div>
-            <p className="text-xl font-mystical text-gold">Click to Reveal</p>
+            <div className="text-4xl md:text-6xl mb-2 md:mb-4">✨</div>
+            <p className="text-lg md:text-xl font-mystical text-gold">Click to Reveal</p>
           </div>
         </div>
 
         {/* Back of card */}
-        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-dark to-black rounded-xl border-2 border-gold shadow-lg p-6 rotate-y-180">
-          <div className="text-center h-full flex flex-col justify-between">
-            <h3 className="text-2xl font-mystical text-gold mb-4">{card.name}</h3>
-            
-            <div className="flex-grow flex items-center justify-center">
-              <div className="text-8xl mb-4">
-                {card.id === 'fool' && '🃏'}
-                {card.id === 'magician' && '✨'}
-                {card.id === 'priestess' && '🌙'}
-                {card.id === 'empress' && '👑'}
-                {card.id === 'emperor' && '⚔️'}
-                {card.id === 'hierophant' && '🏛️'}
-                {card.id === 'lovers' && '❤️'}
-                {card.id === 'chariot' && '🏃'}
-                {card.id === 'strength' && '🦁'}
-                {card.id === 'hermit' && '🕯️'}
-              </div>
-            </div>
-            
-            <p className="text-gray-300 text-sm">{card.meaning}</p>
+        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gradient-to-br from-purple-lighter to-purple-dark rounded-xl border-2 border-gold shadow-lg p-4 md:p-6 flex flex-col items-center justify-center">
+          <div className="text-center">
+            <h3 className="text-xl md:text-2xl font-mystical text-gold mb-2 md:mb-4">{card.name}</h3>
+            <p className="text-sm md:text-base text-gray-300">{card.meaning}</p>
           </div>
         </div>
       </motion.div>
