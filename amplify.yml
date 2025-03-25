@@ -10,7 +10,6 @@ frontend:
       commands:
         - env | grep -e NODE_ENV -e NEXT_PUBLIC_ >> .env.production
         - npm run build
-        - if [ ! -d "out" ]; then mkdir -p out && cp -r .next/static out/_next/static; fi
   artifacts:
     # IMPORTANT - Please verify your artifacts directory
     baseDirectory: out

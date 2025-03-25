@@ -5,7 +5,7 @@
   "description": "Tarot Card Reader Application",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export -o out",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next out node_modules",
