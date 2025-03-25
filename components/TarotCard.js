@@ -1,43 +1,45 @@
 import { motion } from 'framer-motion';
 
-export default function TarotCard({ card, isFlipped, onClick, position, total }) {
+export default function TarotCard({ card, isFlipped, onClick, position = 0, total = 1 }) {
+  // Calculate the rotation and offset based on the spread type
   const getSpreadStyles = () => {
-    if (!position || !total) return {};
+    if (total === 1) return {};
     
-    const spreadTypes = {
-      1: { rotation: 0, translateX: 0 },
-      3: {
-        0: { rotation: -15, translateX: -100 },
-        1: { rotation: 0, translateX: 0 },
-        2: { rotation: 15, translateX: 100 }
-      },
-      5: {
-        0: { rotation: -30, translateX: -200 },
-        1: { rotation: -15, translateX: -100 },
-        2: { rotation: 0, translateX: 0 },
-        3: { rotation: 15, translateX: 100 },
-        4: { rotation: 30, translateX: 200 }
-      }
+    if (total === 3) {
+      // Past-Present-Future spread
+      const rotation = (position - 1) * 15;
+      const translateX = (position - 1) * 20;
+      return {
+        transform: `rotate(${rotation}deg) translateX(${translateX}px)`
+      };
+    }
+    
+    if (total === 5) {
+      // Cross spread
+      if (position === 2) return { transform: 'translateY(-50%)' };
+      if (position === 3) return { transform: 'translateX(-50%)' };
+      if (position === 4) return { transform: 'translateX(50%)' };
+      if (position === 5) return { transform: 'translateY(50%)' };
+    }
+    
+    // Default circular arrangement for other spreads
+    const angle = (360 / total) * position;
+    const radius = 100;
+    const x = Math.cos((angle * Math.PI) / 180) * radius;
+    const y = Math.sin((angle * Math.PI) / 180) * radius;
+    return {
+      transform: `translate(${x}px, ${y}px) rotate(${angle}deg)`
     };
-
-    return spreadTypes[total]?.[position] || {};
   };
-
-  const spreadStyles = getSpreadStyles();
 
   return (
     <motion.div
-      className="relative w-64 h-96 cursor-pointer perspective-1000"
+      className="relative h-[400px] cursor-pointer perspective-1000"
       onClick={onClick}
-      whileHover={{ scale: 1.05 }}
       initial={{ opacity: 0, y: 20 }}
-      animate={{ 
-        opacity: 1, 
-        y: 0,
-        rotateY: spreadStyles.rotation || 0,
-        x: spreadStyles.translateX || 0
-      }}
-      transition={{ duration: 0.5 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: position * 0.1 }}
+      style={getSpreadStyles()}
     >
       <motion.div
         className="relative w-full h-full preserve-3d"
@@ -45,49 +47,37 @@ export default function TarotCard({ card, isFlipped, onClick, position, total })
         transition={{ duration: 0.6 }}
       >
         {/* Front of card */}
-        <div className="absolute inset-0 backface-hidden rounded-xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-darker to-purple-dark">
-            <div className="absolute inset-0 bg-[url('/card-pattern.png')] opacity-10"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-6xl">✨</div>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-              <div className="text-center text-gold font-mystical text-lg">
-                Click to Reveal
-              </div>
-            </div>
+        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-lighter to-purple-dark rounded-xl border-2 border-gold shadow-lg p-6 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-6xl mb-4">✨</div>
+            <p className="text-xl font-mystical text-gold">Click to Reveal</p>
           </div>
         </div>
 
         {/* Back of card */}
-        <div className="absolute inset-0 backface-hidden rounded-xl overflow-hidden rotate-y-180">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-dark to-purple-darker">
-            <div className="absolute inset-0 bg-[url('/card-pattern.png')] opacity-10"></div>
-            <div className="absolute inset-0 p-6 flex flex-col">
-              <div className="text-4xl mb-4">{getCardEmoji(card.id)}</div>
-              <h3 className="text-2xl font-mystical text-gold mb-4">{card.name}</h3>
-              <p className="text-gray-300 text-sm leading-relaxed">{card.meaning}</p>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/50 to-transparent">
-              <div className="text-center text-gold/80 font-mystical text-sm">
-                Position {position + 1} of {total}
+        <div className="absolute w-full h-full backface-hidden bg-gradient-to-br from-purple-dark to-black rounded-xl border-2 border-gold shadow-lg p-6 rotate-y-180">
+          <div className="text-center h-full flex flex-col justify-between">
+            <h3 className="text-2xl font-mystical text-gold mb-4">{card.name}</h3>
+            
+            <div className="flex-grow flex items-center justify-center">
+              <div className="text-8xl mb-4">
+                {card.id === 'fool' && '🃏'}
+                {card.id === 'magician' && '✨'}
+                {card.id === 'priestess' && '🌙'}
+                {card.id === 'empress' && '👑'}
+                {card.id === 'emperor' && '⚔️'}
+                {card.id === 'hierophant' && '🏛️'}
+                {card.id === 'lovers' && '❤️'}
+                {card.id === 'chariot' && '🏃'}
+                {card.id === 'strength' && '🦁'}
+                {card.id === 'hermit' && '🕯️'}
               </div>
             </div>
+            
+            <p className="text-gray-300 text-sm">{card.meaning}</p>
           </div>
         </div>
       </motion.div>
     </motion.div>
   );
-}
-
-function getCardEmoji(cardId) {
-  const emojis = {
-    1: '🌙', // The Moon
-    2: '☀️', // The Sun
-    3: '⭐', // The Star
-    4: '🌠', // The Tower
-    5: '🎭', // The Fool
-    // Add more card emojis as needed
-  };
-  return emojis[cardId] || '✨';
 } 

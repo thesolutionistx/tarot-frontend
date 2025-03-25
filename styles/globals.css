@@ -1,171 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --foreground: #ffffff;
-  --background: #2B004A;
-  --purple-dark: #3A005F;
-  --purple-darker: #200038;
-  --gold: #FFD700;
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: 43, 0, 74;
+  --accent-rgb: 247, 208, 1;
 }
 
 body {
-  color: var(--foreground);
-  background: linear-gradient(135deg, var(--purple-darker), var(--purple-dark));
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
   min-height: 100vh;
-  position: relative;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('/mystical-pattern.png');
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* 3D Transform Utilities */
-.perspective-1000 {
-  perspective: 1000px;
-}
-
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
-.backface-hidden {
-  backface-visibility: hidden;
-}
-
-.rotate-y-180 {
-  transform: rotateY(180deg);
-}
-
-/* Custom Animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Custom Components */
-.nav-link {
-  @apply text-white hover:text-gold transition-colors font-mystical relative;
-}
-
-.nav-link::after {
-  content: '';
-  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300;
-}
-
-.nav-link:hover::after {
-  @apply w-full;
-}
-
-/* Card Styles */
-.card-panel {
-  @apply bg-purple-darker/80 backdrop-blur-md border border-gold/20 rounded-xl p-6 shadow-lg;
-  transition: all 0.3s ease;
-}
-
-.card-panel:hover {
-  @apply border-gold/40 shadow-xl;
-  transform: translateY(-2px);
-}
-
-/* Button Styles */
-.btn-primary {
-  @apply bg-gradient-to-r from-purple-dark to-purple-darker text-white px-6 py-3 rounded-full font-mystical text-lg border border-gold/20 hover:border-gold/40 transition-all duration-300 shadow-lg hover:shadow-xl;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-}
-
-/* Input Styles */
-.input-mystical {
-  @apply bg-purple-darker/50 border border-gold/20 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:border-gold/40 transition-colors;
-}
-
-/* Radio Styles */
-.radio-mystical {
-  @apply appearance-none w-4 h-4 border border-gold/20 rounded-full checked:bg-gold checked:border-gold transition-colors;
-}
-
-/* Link Styles */
-.link-mystical {
-  @apply text-gold hover:text-gold/80 transition-colors relative;
-}
-
-.link-mystical::after {
-  content: '';
-  @apply absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300;
-}
-
-.link-mystical:hover::after {
-  @apply w-full;
-}
-
-/* Glowing Border Effect */
-.glow-border {
-  position: relative;
-}
-
-.glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(45deg, var(--gold), transparent, var(--gold));
-  border-radius: inherit;
-  z-index: -1;
-  animation: borderGlow 3s linear infinite;
-}
-
-@keyframes borderGlow {
-  0% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.5;
-  }
-}
-
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-purple-darker;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gold/20 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gold/40;
+  font-family: 'Inter', sans-serif;
 }
 
 @layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
   .text-gold {
     color: rgb(var(--accent-rgb));
   }
@@ -182,18 +50,27 @@ body::before {
     font-family: 'Cinzel', serif;
   }
 
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+  .card-panel {
+    @apply bg-[#3A005F] rounded-xl p-6 shadow-lg border border-gold/10;
   }
 
-  .spread-container {
-    position: relative;
-    min-height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .btn-primary {
+    @apply bg-gold text-[#2B004A] font-bold py-3 px-6 rounded-lg hover:bg-[#F7D001] transition-colors;
+  }
+
+  .btn-outline {
+    @apply border-2 border-gold text-gold font-bold py-3 px-6 rounded-lg hover:bg-gold/10 transition-colors;
+  }
+
+  .input-field {
+    @apply w-full bg-[#200038] border border-gold/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-gold transition-colors;
+  }
+
+  .radio-group {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  .radio-option {
+    @apply flex items-center space-x-3 p-4 bg-[#200038] rounded-lg border border-gold/20 cursor-pointer hover:border-gold transition-colors;
   }
 } 
