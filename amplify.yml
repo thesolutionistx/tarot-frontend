@@ -4,9 +4,8 @@ frontend:
     # IMPORTANT - Please verify your build commands
     preBuild:
       commands:
-        - nvm install 20
         - nvm use 20
-        - if [ ! -f package-lock.json ]; then npm install; else npm ci --legacy-peer-deps; fi
+        - npm install
     build:
       commands:
         - env | grep -e NODE_ENV -e NEXT_PUBLIC_ >> .env.production
