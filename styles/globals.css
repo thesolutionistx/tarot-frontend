@@ -1,19 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 44, 16, 86;
-  --background-end-rgb: 0, 0, 0;
+  --background-rgb: 43, 0, 74;
+  --accent-rgb: 247, 208, 1;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-    to bottom,
-    rgb(var(--background-start-rgb)),
-    rgb(var(--background-end-rgb))
-  );
+  background: rgb(var(--background-rgb));
   min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  .text-gold {
+    color: rgb(var(--accent-rgb));
+  }
+
+  .bg-gold {
+    background-color: rgb(var(--accent-rgb));
+  }
+
+  .border-gold {
+    border-color: rgb(var(--accent-rgb));
+  }
+
+  .font-mystical {
+    font-family: 'Cinzel', serif;
+  }
+
+  .card-panel {
+    @apply bg-[#3A005F] rounded-xl p-6 shadow-lg border border-gold/10;
+  }
+
+  .btn-primary {
+    @apply bg-gold text-[#2B004A] font-bold py-3 px-6 rounded-lg hover:bg-[#F7D001] transition-colors;
+  }
+
+  .btn-outline {
+    @apply border-2 border-gold text-gold font-bold py-3 px-6 rounded-lg hover:bg-gold/10 transition-colors;
+  }
+
+  .input-field {
+    @apply w-full bg-[#200038] border border-gold/20 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-gold transition-colors;
+  }
+
+  .radio-group {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+  }
+
+  .radio-option {
+    @apply flex items-center space-x-3 p-4 bg-[#200038] rounded-lg border border-gold/20 cursor-pointer hover:border-gold transition-colors;
+  }
 } 
